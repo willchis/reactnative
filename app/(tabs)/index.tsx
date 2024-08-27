@@ -1,11 +1,38 @@
-import { Image, StyleSheet, Platform } from 'react-native';
+import {useEffect, useState} from 'react';
+import { ActivityIndicator, Image, FlatList, StyleSheet, Text, Platform } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
+type Headline = {
+  title: string;
+  description: string;
+};
+
 export default function HomeScreen() {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState<Headline[]>([]);
+
+
+
+  const getHeadlines = async () => {
+    try {
+      const response = await fetch('https://feathernews.org/api');
+      const json = await response.json();
+      setData(json.movies);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getHeadlines();
+  }, []);
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -16,6 +43,19 @@ export default function HomeScreen() {
         />
       }>
       <ThemedView style={styles.titleContainer}>
+      {isLoading ? (
+        <ActivityIndicator />
+      ) : (
+        <FlatList
+          data={data}
+          keyExtractor={item => item.title }
+          renderItem={({item}) => (
+            <Text>
+              {item.title}, {item.description}
+            </Text>
+          )}
+        />
+      )}
         <ThemedText type="title">Welcome!</ThemedText>
         <HelloWave />
       </ThemedView>
