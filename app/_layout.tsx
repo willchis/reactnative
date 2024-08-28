@@ -1,5 +1,5 @@
 
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 import Index from "@/app/index";
 
@@ -8,6 +8,7 @@ export default function RootLayout() {
     <View style={
       styles.container 
     }>
+      <Text style={{color: 'white', fontSize: 30, marginBottom:5}}>FeatherNews</Text>
       <Index/>
     </View>
   );

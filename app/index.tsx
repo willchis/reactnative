@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, Image, StyleSheet, Text, View } from 'react-native';
 
 type Headline = {
   title: string;
@@ -10,6 +10,11 @@ type Headline = {
 export default function Index() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState<Headline[]>([]);
+
+  // TODO: memoize these
+  const dimensions = Dimensions.get('window');
+  const imageHeight = Math.round(dimensions.width * 9 / 16);
+  const imageWidth = dimensions.width;
 
   const getHeadlines = async () => {
     try {
@@ -38,17 +43,18 @@ export default function Index() {
           data={data}
           keyExtractor={item => item.title }
           renderItem={({item}) => {
+            console.log(item.urlToImage);
             const imageElement = item.urlToImage ?
-            <Image src={item.urlToImage}/>
+            <Image source={{uri: item.urlToImage}} style={{width: imageWidth, height: imageHeight}}/>
             :
             undefined;
             
             return (
-              <>
+              <View style={{marginBottom: 10}}>
+              {imageElement}
               <Text style={styles.title}>{item.title}</Text>
               <Text style={styles.description}>{item.description}</Text>
-              {imageElement}
-              </>
+              </View>
             )
         }}
         />
