@@ -57,7 +57,7 @@ export default function Index() {
                 <Text style={styles.title}>{item.title}</Text>
                 <Text style={styles.description}>{item.description}</Text>
                 </View>
-              </TouchableOpacity>ç
+              </TouchableOpacity>
             )
         }}
         />
