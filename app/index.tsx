@@ -1,10 +1,11 @@
 import {useEffect, useState} from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Image, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Dimensions, FlatList, Image, Linking, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 
 type Headline = {
   title: string;
   description: string;
   urlToImage: string;
+  url: string;
 };
 
 export default function Index() {
@@ -50,11 +51,13 @@ export default function Index() {
             undefined;
             
             return (
-              <View style={{marginBottom: 10}}>
-              {imageElement}
-              <Text style={styles.title}>{item.title}</Text>
-              <Text style={styles.description}>{item.description}</Text>
-              </View>
+              <TouchableOpacity onPress={() => Linking.openURL(item.url)}>
+                <View style={{marginBottom: 10}}>
+                {imageElement}
+                <Text style={styles.title}>{item.title}</Text>
+                <Text style={styles.description}>{item.description}</Text>
+                </View>
+              </TouchableOpacity>ç
             )
         }}
         />
@@ -67,9 +70,11 @@ const styles = StyleSheet.create({
   title: {
     color: 'white',
     fontWeight: 'bold',
+    marginTop: 5,
 
   },
   description: {
     color: 'white',
+    marginTop: 5,
   }
 });
